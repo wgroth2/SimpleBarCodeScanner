@@ -1,0 +1,71 @@
+# Android Studio / IntelliJ
+*.iml
+.idea/caches/
+.idea/gradle.xml
+.idea/libraries/
+.idea/misc.xml
+.idea/modules.xml
+.idea/runConfigurations/
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+.idea/workspace.xml # User-specific workspace settings
+.idea
+.kotlin
+
+# Gradle
+.gradle/
+build/
+.externalNativeBuild/ # For NDK
+.cxx/               # For NDK
+
+# Local configuration
+local.properties
+
+# Log files
+*.log
+
+# Old
+*.old
+
+# APK / App Bundle files
+*.apk
+*.aab
+
+# Keystore files (NEVER commit these to a public repository)
+*.jks
+*.keystore
+
+# Google Services
+# Typically, google-services.json IS committed if it doesn't contain sensitive info
+# and is necessary for others to build the project.
+# If you have a specific version with secrets, consider git-crypt or environment variables.
+# google-services.json # Uncomment if you need to ignore it for specific reasons.
+# If you choose to ignore it here, make sure your team knows how to acquire it.
+google-services.json # Assuming from your root file, you want to ignore it.
+
+# Android Studio captured files (e.g., for profiling)
+captures/
+*.hprof
+
+# Lint generated files
+# lint/baseline.xml # Often committed to track lint baseline, so usually NOT ignored.
+lint/reports/
+
+# Test results
+test-results/
+test-reports/
+
+# Other generated files
+generated/
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Specific files you want to ignore
+/app/src/main/res/drawable/screenshotbarcode.png
+/app/src/main/res/drawable/testbarcode.webp
+
+# IMPORTANT: If you had a .gitignore in app/ before and are deleting it,
+# ensure any rules unique to it that are still needed are merged here.
+# The one you provided for app/ was very comprehensive and mostly covered above.
