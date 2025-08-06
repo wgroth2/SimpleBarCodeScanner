@@ -1,4 +1,4 @@
-package com.digiroth.pdf417barcodescanner.ui.theme
+package com.digiroth.simplebarcodescanner.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

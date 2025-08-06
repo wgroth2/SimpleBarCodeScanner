@@ -1,4 +1,4 @@
-package com.digiroth.pdf417barcodescanner
+package com.digiroth.simplebarcodescanner
 
 // from Google Play Lib. Idea from here: https://developers.google.com/ml-kit/vision/barcode-scanning/code-scanner
 import android.content.Context
@@ -45,8 +45,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.preference.PreferenceManager
-import com.digiroth.pdf417barcodescanner.ui.settings.SettingsActivity
-import com.digiroth.pdf417barcodescanner.ui.theme.PDF417BarCodeScannerTheme
+import com.digiroth.simplebarcodescanner.ui.settings.SettingsActivity
+import com.digiroth.simplebarcodescanner.ui.theme.PDF417BarCodeScannerTheme
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanner
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions

@@ -1,4 +1,4 @@
-package com.digiroth.pdf417barcodescanner.ui.settings
+package com.digiroth.simplebarcodescanner.ui.settings
 
 import android.content.SharedPreferences
 import android.os.Bundle

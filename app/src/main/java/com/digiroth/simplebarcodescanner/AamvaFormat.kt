@@ -1,4 +1,4 @@
-package com.digiroth.pdf417barcodescanner
+package com.digiroth.simplebarcodescanner
 
 import java.text.SimpleDateFormat
 import java.util.Locale

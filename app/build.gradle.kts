@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.digiroth.pdf417barcodescanner"
+    namespace = "com.digiroth.simplebarcodescanner"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.digiroth.pdf417barcodescanner"
+        applicationId = "com.digiroth.simplebarcodescanner"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

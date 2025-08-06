@@ -1,6 +1,5 @@
-package com.digiroth.pdf417barcodescanner.ui.theme
+package com.digiroth.simplebarcodescanner.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

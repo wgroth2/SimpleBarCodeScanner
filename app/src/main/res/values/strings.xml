@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">PDF417BarCodeScanner</string>
+    <string name="app_name">SimpleBarCodeScanner</string>
     <string name="take_photo">Take Photo</string>
 </resources>

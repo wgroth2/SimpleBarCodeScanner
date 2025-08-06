@@ -65,3 +65,7 @@ Thumbs.db
 # Specific files you want to ignore
 /app/src/main/res/drawable/screenshotbarcode.png
 /app/src/main/res/drawable/testbarcode.webp
+/gradle/wrapper/gradle-wrapper.jar
+/app/src/test/java/com/digiroth/pdf417barcodescanner/ExampleUnitTest.kt
+/app/src/main/res/xml/data_extraction_rules.xml
+/app/src/main/res/xml/backup_rules.xml

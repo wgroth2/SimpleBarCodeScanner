@@ -1,5 +1,5 @@
 // ResultsActivity.kt
-package com.digiroth.pdf417barcodescanner // Use your actual package name
+package com.digiroth.simplebarcodescanner // Use your actual package name
 
 import android.content.Context
 import android.content.Intent
@@ -18,8 +18,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ContentCopy
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
@@ -40,7 +38,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.digiroth.pdf417barcodescanner.ui.theme.PDF417BarCodeScannerTheme
+import com.digiroth.simplebarcodescanner.ui.theme.PDF417BarCodeScannerTheme
 
 class ResultsActivity : ComponentActivity() {
 

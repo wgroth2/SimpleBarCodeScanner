@@ -1,4 +1,4 @@
-package com.digiroth.pdf417barcodescanner
+package com.digiroth.simplebarcodescanner
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

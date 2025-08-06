@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "PDF417BarCodeScanner"
+rootProject.name = "SimpleBarCodeScanner"
 include(":app")
