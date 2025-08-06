@@ -39,6 +39,16 @@
 
         </activity>
 
+        <activity
+            android:name=".ui.settings.SettingsActivity"
+            android:label="Settings"
+            android:parentActivityName=".MainActivity"> <!-- Or your main activity -->
+            <!-- Add meta-data for parent activity to ensure up navigation works correctly -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"
             android:value="barcode_ui" />

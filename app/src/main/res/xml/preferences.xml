@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:title="General Settings">
+
+        <SwitchPreferenceCompat
+            app:key="auto_zoom"
+            app:title="Auto Zoom"
+            app:summary="Enable or disable automatic zooming in the scanner"
+            app:defaultValue="true" />  <!-- Default value when the setting is first accessed -->
+
+    </PreferenceCategory>
+
+    <!-- You can add more categories and preferences here -->
+
+</PreferenceScreen>

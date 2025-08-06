@@ -4,15 +4,27 @@ package com.digiroth.pdf417barcodescanner // Use your actual package name
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -22,6 +34,10 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ClipboardManager
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.digiroth.pdf417barcodescanner.ui.theme.PDF417BarCodeScannerTheme
@@ -55,6 +71,9 @@ class ResultsActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ResultScreen(scannedData: String) {
+    val clipboardManager: ClipboardManager = LocalClipboardManager.current
+    val context = LocalContext.current
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -75,10 +94,56 @@ fun ResultScreen(scannedData: String) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                text = scannedData,
-                style = MaterialTheme.typography.bodyLarge
-            )
+            SelectionContainer {
+                Text(
+                    text = scannedData,
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.fillMaxWidth() // Good for readability
+                    )
+            }
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Button(
+                onClick = {
+                    val annotatedString = AnnotatedString(scannedData)
+                    clipboardManager.setText(annotatedString)
+                    Toast.makeText(context, "Copied to clipboard", Toast.LENGTH_SHORT).show()
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ContentCopy,
+                    contentDescription = "Copy",
+                    modifier = Modifier.padding(end = 8.dp)
+                )
+                Text("Copy to Clipboard")
+            }
+            // Share Button
+            Button(
+                onClick = {
+                    val sendIntent = Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_TEXT, scannedData)
+                        type = "text/plain"
+                    }
+                    // Create a chooser to let the user pick an app
+                    val shareIntent = Intent.createChooser(sendIntent, null) // "null" for default chooser title
+
+                    // Verify that the intent will resolve to an activity
+                    if (sendIntent.resolveActivity(context.packageManager) != null) {
+                        context.startActivity(shareIntent)
+                    } else {
+                        // Handle case where no app can handle the share action
+                        Toast.makeText(context, "No app available to share this content", Toast.LENGTH_LONG).show()
+                    }
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Share, // Use the Share icon
+                    contentDescription = "Share",
+                    modifier = Modifier.padding(end = 8.dp)
+                )
+                Text("Share")
+            }
         }
     }
 }

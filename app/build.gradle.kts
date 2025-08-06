@@ -54,7 +54,12 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
+    // These bring in the icon definitions. They might already be included transitively,
+    // but you can declare them explicitly if needed or if you want to ensure you get them.
+    implementation("androidx.compose.material:material-icons-core")
+    implementation("androidx.compose.material:material-icons-extended") // ContentCopy is in here
 
+    implementation("androidx.preference:preference-ktx:1.2.1") // Or the latest version
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
