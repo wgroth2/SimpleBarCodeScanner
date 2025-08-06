@@ -65,7 +65,3 @@ Thumbs.db
 # Specific files you want to ignore
 /app/src/main/res/drawable/screenshotbarcode.png
 /app/src/main/res/drawable/testbarcode.webp
-
-# IMPORTANT: If you had a .gitignore in app/ before and are deleting it,
-# ensure any rules unique to it that are still needed are merged here.
-# The one you provided for app/ was very comprehensive and mostly covered above.
