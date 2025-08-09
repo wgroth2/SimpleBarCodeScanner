@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -6,16 +8,25 @@ plugins {
 
 android {
     namespace = "com.digiroth.simplebarcodescanner"
+    //noinspection GradleDependency
     compileSdk = 35
+    android.buildFeatures.buildConfig = true
 
     defaultConfig {
         applicationId = "com.digiroth.simplebarcodescanner"
         minSdk = 24
+        //noinspection OldTargetApi
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        
+        // Add this block to read from local.properties
+        val properties = Properties()
+        properties.load(project.rootProject.file("local.properties").inputStream())
+
+        buildConfigField("String", "GEMINI_API_KEY", properties.getProperty("geminiApiKey"))
     }
 
     buildTypes {
@@ -26,13 +37,15 @@ android {
                 "proguard-rules.pro"
             )
         }
+        debug {
+            // You might put the buildConfigField here if you only need the key in debug
+            // For example:
+            // buildConfigField("String", "DEBUG_GEMINI_API_KEY", properties.getProperty("geminiApiKey"))
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
     }
     buildFeatures {
         compose = true
@@ -54,12 +67,13 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
+    implementation(libs.androidx.compose.compiler)
     // These bring in the icon definitions. They might already be included transitively,
     // but you can declare them explicitly if needed or if you want to ensure you get them.
-    implementation("androidx.compose.material:material-icons-core")
-    implementation("androidx.compose.material:material-icons-extended") // ContentCopy is in here
+    implementation(libs.androidx.material.icons.core)
+    implementation(libs.androidx.material.icons.extended) // ContentCopy is in here
 
-    implementation("androidx.preference:preference-ktx:1.2.1") // Or the latest version
+    implementation(libs.androidx.preference.ktx) // Or the latest version
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -83,4 +97,10 @@ dependencies {
         // If you only load from local URIs (like from the camera), this might be optional
         // but it's often good to include it for general image loading capabilities.
     implementation(libs.coil3.coil.network.okhttp) // Match the version with coil-compose
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
     }
+}

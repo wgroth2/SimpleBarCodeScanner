@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.digiroth.pdf417barcodescanner", appContext.packageName)
+        assertEquals("com.digiroth.simplebarcodescanner", appContext.packageName)
     }
 }
