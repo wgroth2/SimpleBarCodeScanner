@@ -9,7 +9,7 @@ plugins {
 android {
     namespace = "com.digiroth.simplebarcodescanner"
     //noinspection GradleDependency
-    compileSdk = 35
+    compileSdk = 36
     android.buildFeatures.buildConfig = true
 
     defaultConfig {
@@ -31,7 +31,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -64,16 +64,15 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.play.services.code.scanner)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.compose.compiler)
+//    implementation(libs.androidx.activity)
+//    implementation(libs.androidx.compose.compiler)
     // These bring in the icon definitions. They might already be included transitively,
     // but you can declare them explicitly if needed or if you want to ensure you get them.
     implementation(libs.androidx.material.icons.core)
     implementation(libs.androidx.material.icons.extended) // ContentCopy is in here
 
     implementation(libs.androidx.preference.ktx) // Or the latest version
+    implementation(libs.androidx.navigation.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -84,8 +83,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     // ML Kit Barcode Scanning (if you plan to process it in MainActivity later)
-    implementation(libs.barcode.scanning) // Check for latest
-    androidTestImplementation(libs.barcode.scanning) // Assuming you added this as per previous suggestion
+    // implementation(libs.barcode.scanning) // Check for latest
+    // androidTestImplementation(libs.barcode.scanning) // Assuming you added this as per previous suggestion
 
 
         // Coil for Jetpack Compose
