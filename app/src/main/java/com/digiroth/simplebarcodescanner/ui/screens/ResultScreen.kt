@@ -20,16 +20,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-//TODO: Add Share
-//TODO: Add About here.
-//TODO: Add URL code so it will link off to something. COde it so you can capture
+import com.digiroth.simplebarcodescanner.AamvaFormatter
+import com.digiroth.simplebarcodescanner.ui.components.HyperlinkText
+import com.google.mlkit.vision.barcode.common.Barcode
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ResultScreen(
     scannedData: String,
+    valueType: Int,
+    format: Int,
     onBack: () -> Unit
 ) {
+    val displayData = formatDisplayData(data = scannedData, valueType = valueType, format = format)
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -51,11 +55,71 @@ fun ResultScreen(
         ) {
             Text("Scanned Code:", style = MaterialTheme.typography.headlineSmall)
             Spacer(modifier = Modifier.height(8.dp))
-            Text(scannedData, style = MaterialTheme.typography.bodyLarge)
+
+            when (valueType) {
+                Barcode.TYPE_URL -> {
+                    HyperlinkText(
+                        text = displayData,
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
+                else -> {
+                    Text(displayData, style = MaterialTheme.typography.bodyLarge)
+                }
+            }
+
             Spacer(modifier = Modifier.height(24.dp))
             Button(onClick = onBack) {
                 Text("Scan Again")
             }
         }
     }
+}
+
+private fun getBarcodeTypeName(valueType: Int): String {
+    return when (valueType) {
+        Barcode.TYPE_URL -> "URL"
+        Barcode.TYPE_DRIVER_LICENSE -> "Driver's License"
+        Barcode.TYPE_TEXT -> "Text"
+        Barcode.TYPE_PRODUCT -> "Product"
+        Barcode.TYPE_ISBN -> "ISBN"
+        Barcode.TYPE_WIFI -> "Wi-Fi Network"
+        Barcode.TYPE_GEO -> "Geo Point"
+        Barcode.TYPE_CALENDAR_EVENT -> "Calendar Event"
+        Barcode.TYPE_CONTACT_INFO -> "Contact Info"
+        Barcode.TYPE_EMAIL -> "Email"
+        Barcode.TYPE_PHONE -> "Phone Number"
+        Barcode.TYPE_SMS -> "SMS"
+        else -> "Unknown Type"
+    }
+}
+
+private fun getBarcodeFormatName(format: Int): String {
+    return when (format) {
+        Barcode.FORMAT_CODE_128 -> "FORMAT_CODE_128"
+        Barcode.FORMAT_CODE_39 -> "FORMAT_CODE_39"
+        Barcode.FORMAT_CODE_93 -> "FORMAT_CODE_93"
+        Barcode.FORMAT_CODABAR -> "FORMAT_CODABAR"
+        Barcode.FORMAT_DATA_MATRIX -> "FORMAT_DATA_MATRIX"
+        Barcode.FORMAT_EAN_13 -> "FORMAT_EAN_13"
+        Barcode.FORMAT_EAN_8 -> "FORMAT_EAN_8"
+        Barcode.FORMAT_ITF -> "FORMAT_ITF"
+        Barcode.FORMAT_QR_CODE -> "FORMAT_QR_CODE"
+        Barcode.FORMAT_UPC_A -> "FORMAT_UPC_A"
+        Barcode.FORMAT_UPC_E -> "FORMAT_UPC_E"
+        Barcode.FORMAT_PDF417 -> "FORMAT_PDF417"
+        Barcode.FORMAT_AZTEC -> "FORMAT_AZTEC"
+        else -> "UNKNOWN_FORMAT"
+    }
+}
+
+private fun formatDisplayData(data: String, valueType: Int, format: Int): String {
+    val typeName = getBarcodeTypeName(valueType)
+    val formatName = getBarcodeFormatName(format)
+    val header = "Type: $typeName ($formatName)\n\n"
+    val formattedData = when (valueType) {
+        Barcode.TYPE_DRIVER_LICENSE -> AamvaFormatter.formatAamvaData(data)
+        else -> data
+    }
+    return header + formattedData
 }

@@ -13,20 +13,17 @@ import com.digiroth.simplebarcodescanner.ui.screens.SettingsScreen
 import java.net.URLDecoder
 import java.net.URLEncoder
 
-// 1. Define your screen routes in a type-safe way
 sealed class Screen(val route: String) {
     object Home : Screen("home_screen")
     object Settings : Screen("settings_screen")
-    object Results : Screen("results_screen/{scanResult}") {
-        // Helper function to create the route with the data, ensuring it's URL-encoded
-        fun createRoute(scanResult: String): String {
+    object Results : Screen("results_screen/{scanResult}/{valueType}/{format}") {
+        fun createRoute(scanResult: String, valueType: Int, format: Int): String {
             val encodedResult = URLEncoder.encode(scanResult, "UTF-8")
-            return "results_screen/$encodedResult"
+            return "results_screen/$encodedResult/$valueType/$format"
         }
     }
 }
 
-// 2. Define the Navigation Graph
 @Composable
 fun AppNavigation() {
     val navController: NavHostController = rememberNavController()
@@ -35,11 +32,10 @@ fun AppNavigation() {
         navController = navController,
         startDestination = Screen.Home.route
     ) {
-        // --- Home Screen ---
         composable(route = Screen.Home.route) {
             HomeScreen(
-                onScanSuccess = { result ->
-                    navController.navigate(Screen.Results.createRoute(result))
+                onScanSuccess = { result, valueType, format ->
+                    navController.navigate(Screen.Results.createRoute(result, valueType, format))
                 },
                 onNavigateToSettings = {
                     navController.navigate(Screen.Settings.route)
@@ -47,21 +43,27 @@ fun AppNavigation() {
             )
         }
 
-        // --- Results Screen ---
         composable(
             route = Screen.Results.route,
-            arguments = listOf(navArgument("scanResult") { type = NavType.StringType })
+            arguments = listOf(
+                navArgument("scanResult") { type = NavType.StringType },
+                navArgument("valueType") { type = NavType.IntType },
+                navArgument("format") { type = NavType.IntType }
+            )
         ) { backStackEntry ->
             val encodedResult = backStackEntry.arguments?.getString("scanResult") ?: ""
             val scanResult = URLDecoder.decode(encodedResult, "UTF-8")
+            val valueType = backStackEntry.arguments?.getInt("valueType") ?: -1
+            val format = backStackEntry.arguments?.getInt("format") ?: -1
 
             ResultScreen(
                 scannedData = scanResult,
+                valueType = valueType,
+                format = format,
                 onBack = { navController.popBackStack() }
             )
         }
 
-        // --- Settings Screen ---
         composable(route = Screen.Settings.route) {
             SettingsScreen(
                 onBack = { navController.popBackStack() }

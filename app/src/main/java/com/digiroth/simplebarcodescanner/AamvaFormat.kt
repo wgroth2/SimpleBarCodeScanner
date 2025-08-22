@@ -1,3 +1,6 @@
+// noinspection Typo
+@file:Suppress("SpellCheckingInspection")
+
 package com.digiroth.simplebarcodescanner
 
 import java.text.SimpleDateFormat
@@ -38,8 +41,8 @@ object AamvaFormatter {
     )
 
     private val INPUT_DATE_FORMATS = listOf(
-        SimpleDateFormat("yyyyMMdd", Locale.US),
-        SimpleDateFormat("MMddyyyy", Locale.US)
+        SimpleDateFormat("yyyyMMdd", Locale.US).apply { isLenient = false },
+        SimpleDateFormat("MMddyyyy", Locale.US).apply { isLenient = false }
     )
     private val OUTPUT_DATE_FORMAT = SimpleDateFormat("MM/dd/yyyy", Locale.US)
 
@@ -111,7 +114,7 @@ object AamvaFormatter {
         for (format in INPUT_DATE_FORMATS) {
             try {
                 format.parse(dateStr)?.let { return OUTPUT_DATE_FORMAT.format(it) }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 // Ignore and try next format
             }
         }
@@ -142,7 +145,7 @@ object AamvaFormatter {
             } else {
                 heightStr
             }
-        } catch (e: NumberFormatException) {
+        } catch (_: NumberFormatException) {
             heightStr
         }
     }

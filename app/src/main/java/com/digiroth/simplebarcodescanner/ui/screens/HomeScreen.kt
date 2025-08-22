@@ -1,7 +1,6 @@
 package com.digiroth.simplebarcodescanner.ui.screens
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -47,29 +46,35 @@ import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    onScanSuccess: (String) -> Unit,
+    onScanSuccess: (String, Int, Int) -> Unit,
     onNavigateToSettings: () -> Unit
 ) {
     val context: Context = LocalContext.current
     var showMenu by remember { mutableStateOf(false) }
     var showAboutDialog by remember { mutableStateOf(false) }
 
-    // Read the preference. This will be re-evaluated on every recomposition.
     val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     val isAutoZoomEnabled = sharedPreferences.getBoolean("auto_zoom", true)
 
-    // Scanner initialization is now keyed to the isAutoZoomEnabled value.
-    // If it changes, this whole block will re-run to create a new scanner.
     val scanner: GmsBarcodeScanner = remember(isAutoZoomEnabled) {
         Log.d("ScannerInit", "Scanner is being re-initialized with auto-zoom: $isAutoZoomEnabled")
 
         val optionsBuilder = GmsBarcodeScannerOptions.Builder()
             .setBarcodeFormats(
-                Barcode.FORMAT_CODE_128, Barcode.FORMAT_CODE_39, Barcode.FORMAT_CODE_93,
-                Barcode.FORMAT_CODABAR, Barcode.FORMAT_DATA_MATRIX, Barcode.FORMAT_EAN_13,
-                Barcode.FORMAT_EAN_8, Barcode.FORMAT_ITF, Barcode.FORMAT_QR_CODE,
-                Barcode.FORMAT_UPC_A, Barcode.FORMAT_UPC_E, Barcode.FORMAT_PDF417,
-                Barcode.FORMAT_AZTEC
+                Barcode.FORMAT_CODE_128,
+                Barcode.FORMAT_CODE_39,
+                Barcode.FORMAT_CODE_93,
+                Barcode.FORMAT_CODABAR,
+                Barcode.FORMAT_DATA_MATRIX,
+                Barcode.FORMAT_EAN_13,
+                Barcode.FORMAT_EAN_8,
+                Barcode.FORMAT_ITF,
+                Barcode.FORMAT_QR_CODE,
+                Barcode.FORMAT_UPC_A,
+                Barcode.FORMAT_UPC_E,
+                Barcode.FORMAT_PDF417,
+                Barcode.FORMAT_AZTEC,
+                Barcode.TYPE_DRIVER_LICENSE
             )
         if (isAutoZoomEnabled) {
             optionsBuilder.enableAutoZoom()
@@ -118,16 +123,14 @@ fun HomeScreen(
             Button(onClick = {
                 scanner.startScan()
                     .addOnSuccessListener { barcode ->
-                        val rawValue = barcode.rawValue
+                        val rawValue = barcode.rawValue ?: "No data"
                         val valueType = barcode.valueType
-                        //TODO: Format
-                        val fullScanResult = "Type: ${getBarcodeFormatName(valueType)}\nValue: ${rawValue ?: "N/A"}"
+                        val format = barcode.format
 
-                        Log.i("BarcodeSuccess", "Barcode raw value: $rawValue, Type: $valueType")
-                        Toast.makeText(context, "Barcode Scanned: ${rawValue ?: "No value"}", Toast.LENGTH_LONG).show()
+                        Log.i("BarcodeSuccess", "Barcode raw value: $rawValue, Type: $valueType, Format: $format")
+                        Toast.makeText(context, "Barcode Scanned: $rawValue", Toast.LENGTH_LONG).show()
 
-                        // Navigate to results screen instead of starting a new activity
-                        onScanSuccess(fullScanResult)
+                        onScanSuccess(rawValue, valueType, format)
                     }
                     .addOnCanceledListener {
                         Log.i("BarcodeCanceled", "Scan canceled by user.")
@@ -145,26 +148,6 @@ fun HomeScreen(
 
     if (showAboutDialog) {
         AboutDialog(onDismissRequest = { showAboutDialog = false })
-    }
-}
-
-private fun getBarcodeFormatName(formatCode: Int): String {
-    return when (formatCode) {
-        Barcode.TYPE_UNKNOWN -> "TYPE_UNKNOWN"
-        Barcode.TYPE_CONTACT_INFO -> "TYPE_CONTACT_INFO"
-        Barcode.TYPE_EMAIL -> "TYPE_EMAIL"
-        Barcode.TYPE_ISBN -> "TYPE_ISBN"
-        Barcode.TYPE_PHONE -> "TYPE_PHONE"
-        Barcode.TYPE_PRODUCT -> "TYPE_PRODUCT"
-        Barcode.TYPE_SMS -> "TYPE_SMS"
-        Barcode.TYPE_TEXT -> "TYPE_TEXT"
-        Barcode.TYPE_URL -> "TYPE_URL"
-        Barcode.TYPE_WIFI -> "TYPE_WIFI"
-        Barcode.TYPE_GEO -> "TYPE_GEO"
-        Barcode.TYPE_CALENDAR_EVENT -> "TYPE_CALENDAR_EVENT"
-        //TODO: Add Driver's license formatting here.
-        Barcode.TYPE_DRIVER_LICENSE -> "TYPE_DRIVER_LICENSE"
-        else -> "UNKNOWN_TYPE ($formatCode)"
     }
 }
 
@@ -193,7 +176,7 @@ private fun AboutDialog(onDismissRequest: () -> Unit) {
                     text = "Build Time: ${BuildConfig.BUILD_TIME}",
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center
+textAlign = TextAlign.Center
                 )
             }
         },
