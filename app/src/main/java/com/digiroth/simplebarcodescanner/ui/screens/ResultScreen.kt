@@ -21,8 +21,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 //TODO: Add Share
-//TODO: Add Settings here
 //TODO: Add About here.
+//TODO: Add URL code so it will link off to something. COde it so you can capture
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ResultScreen(

@@ -1,4 +1,7 @@
 import java.util.Properties
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 plugins {
     alias(libs.plugins.android.application)
@@ -27,10 +30,12 @@ android {
         properties.load(project.rootProject.file("local.properties").inputStream())
 
         buildConfigField("String", "GEMINI_API_KEY", properties.getProperty("geminiApiKey"))
+        buildConfigField("String", "BUILD_TIME", "\"${SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())}\"")
     }
 
     buildTypes {
         release {
+            //TODO: Create Build Variant
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -66,8 +71,7 @@ dependencies {
     implementation(libs.play.services.code.scanner)
 //    implementation(libs.androidx.activity)
 //    implementation(libs.androidx.compose.compiler)
-    // These bring in the icon definitions. They might already be included transitively,
-    // but you can declare them explicitly if needed or if you want to ensure you get them.
+    // These bring in the icon definitions. They might already be included transitively, // but you can declare them explicitly if needed or if you want to ensure you get them.
     implementation(libs.androidx.material.icons.core)
     implementation(libs.androidx.material.icons.extended) // ContentCopy is in here
 

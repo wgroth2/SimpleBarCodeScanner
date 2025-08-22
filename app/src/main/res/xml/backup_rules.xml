@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  This file is used for devices running Android 11 (API 30) and lower.
+  It specifies which app files should be included in Google's Auto Backup service.
+-->
+<full-backup-content>
+
+    <!--
+      Include all SharedPreferences files.
+      This is the most important rule for your app, as it saves user settings
+      like the "auto-zoom" preference. The path "." means include all files
+      in this category.
+    -->
+    <include domain="sharedpref" path="."/>
+
+    <!--
+      Include all database files.
+      Even if you don't use a database right now, this rule ensures that if you
+      add one later (e.g., to save scan history), it will be backed up automatically.
+    -->
+    <include domain="database" path="."/>
+
+</full-backup-content>

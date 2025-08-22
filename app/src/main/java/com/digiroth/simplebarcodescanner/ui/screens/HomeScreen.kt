@@ -38,6 +38,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.preference.PreferenceManager
+import com.digiroth.simplebarcodescanner.BuildConfig
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanner
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
@@ -53,10 +54,14 @@ fun HomeScreen(
     var showMenu by remember { mutableStateOf(false) }
     var showAboutDialog by remember { mutableStateOf(false) }
 
-    // Scanner initialization logic from your working example
-    val scanner: GmsBarcodeScanner = remember {
-        val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        val isAutoZoomEnabled: Boolean = sharedPreferences.getBoolean("auto_zoom", true)
+    // Read the preference. This will be re-evaluated on every recomposition.
+    val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+    val isAutoZoomEnabled = sharedPreferences.getBoolean("auto_zoom", true)
+
+    // Scanner initialization is now keyed to the isAutoZoomEnabled value.
+    // If it changes, this whole block will re-run to create a new scanner.
+    val scanner: GmsBarcodeScanner = remember(isAutoZoomEnabled) {
+        Log.d("ScannerInit", "Scanner is being re-initialized with auto-zoom: $isAutoZoomEnabled")
 
         val optionsBuilder = GmsBarcodeScannerOptions.Builder()
             .setBarcodeFormats(
@@ -115,6 +120,7 @@ fun HomeScreen(
                     .addOnSuccessListener { barcode ->
                         val rawValue = barcode.rawValue
                         val valueType = barcode.valueType
+                        //TODO: Format
                         val fullScanResult = "Type: ${getBarcodeFormatName(valueType)}\nValue: ${rawValue ?: "N/A"}"
 
                         Log.i("BarcodeSuccess", "Barcode raw value: $rawValue, Type: $valueType")
@@ -179,6 +185,13 @@ private fun AboutDialog(onDismissRequest: () -> Unit) {
                 Text(
                     text = "By Bill Roth",
                     style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "Build Time: ${BuildConfig.BUILD_TIME}",
+                    style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )

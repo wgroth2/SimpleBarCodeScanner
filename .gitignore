@@ -69,3 +69,4 @@ Thumbs.db
 /app/src/test/java/com/digiroth/pdf417barcodescanner/ExampleUnitTest.kt
 /app/src/main/res/xml/data_extraction_rules.xml
 /app/src/main/res/xml/backup_rules.xmlbilling
+/next_steps.txt
