@@ -1,3 +1,6 @@
+/*
+ * Copyright 2025 Bill Roth
+ */
 // noinspection Typo
 @file:Suppress("SpellCheckingInspection")
 

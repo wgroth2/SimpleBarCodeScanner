@@ -1,3 +1,6 @@
+/*
+ * Copyright 2025 Bill Roth
+ */
 package com.digiroth.simplebarcodescanner.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement

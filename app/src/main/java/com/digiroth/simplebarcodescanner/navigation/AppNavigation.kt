@@ -1,3 +1,6 @@
+/*
+ * Copyright 2025 Bill Roth
+ */
 package com.digiroth.simplebarcodescanner.navigation
 
 import androidx.compose.runtime.Composable
