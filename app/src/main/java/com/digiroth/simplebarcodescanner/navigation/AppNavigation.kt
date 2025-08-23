@@ -63,7 +63,10 @@ fun AppNavigation() {
                 scannedData = scanResult,
                 valueType = valueType,
                 format = format,
-                onBack = { navController.popBackStack() }
+                onBack = { navController.popBackStack() },
+                onNavigateToSettings = {
+                    navController.navigate(Screen.Settings.route)
+                }
             )
         }
 

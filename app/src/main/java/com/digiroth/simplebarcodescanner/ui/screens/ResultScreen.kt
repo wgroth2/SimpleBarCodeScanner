@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -20,11 +21,18 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.digiroth.simplebarcodescanner.AamvaFormatter
+import com.digiroth.simplebarcodescanner.ui.components.AboutDialog
 import com.digiroth.simplebarcodescanner.ui.components.HyperlinkText
+import com.digiroth.simplebarcodescanner.ui.components.TopAppBarMenu
 import com.google.mlkit.vision.barcode.common.Barcode
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,9 +41,11 @@ fun ResultScreen(
     scannedData: String,
     valueType: Int,
     format: Int,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onNavigateToSettings: () -> Unit
 ) {
     val displayData = formatDisplayData(data = scannedData, valueType = valueType, format = format)
+    var showAboutDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -45,6 +55,12 @@ fun ResultScreen(
                     IconButton(onClick = onBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
+                },
+                actions = {
+                    TopAppBarMenu(
+                        onSettingsClick = onNavigateToSettings,
+                        onAboutClick = { showAboutDialog = true }
+                    )
                 }
             )
         }
@@ -72,10 +88,22 @@ fun ResultScreen(
             }
 
             Spacer(modifier = Modifier.height(24.dp))
-            Button(onClick = onBack) {
-                Text("Scan Again")
+            Button(
+                onClick = onBack,
+                modifier = Modifier
+                    .fillMaxWidth(0.8f)
+                    .height(60.dp)
+            ) {
+                Text(
+                    text = "Scan Again",
+                    fontSize = 20.sp
+                )
             }
         }
+    }
+
+    if (showAboutDialog) {
+        AboutDialog(onDismissRequest = { showAboutDialog = false })
     }
 }
 
