@@ -20,20 +20,17 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.preference.PreferenceManager
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    viewModel: SettingsViewModel
 ) {
     Scaffold(
         topBar = {
@@ -48,49 +45,28 @@ fun SettingsScreen(
         }
     ) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues)) {
+            val isAutoZoomEnabled by viewModel.isAutoZoomEnabled.collectAsState()
             SwitchPreference(
-                key = "auto_zoom",
                 title = "Enable Auto-Zoom",
                 summary = "Automatically zoom in on barcodes",
-                defaultValue = true
+                isChecked = isAutoZoomEnabled,
+                onCheckedChange = { viewModel.updateAutoZoom(it) }
             )
         }
     }
 }
 
-/**
- * A composable that displays a title, a summary, and a switch.
- * It manages its own state by reading and writing to SharedPreferences.
- */
 @Composable
 private fun SwitchPreference(
-    key: String,
     title: String,
     summary: String,
-    defaultValue: Boolean
+    isChecked: Boolean,
+    onCheckedChange: (Boolean) -> Unit
 ) {
-    val context = LocalContext.current
-    val sharedPreferences = remember {
-        PreferenceManager.getDefaultSharedPreferences(context)
-    }
-
-    // State for the switch, initialized from SharedPreferences
-    var isChecked by remember {
-        mutableStateOf(sharedPreferences.getBoolean(key, defaultValue))
-    }
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable {
-                // Update state and SharedPreferences on click
-                val newCheckedState = !isChecked
-                isChecked = newCheckedState
-                sharedPreferences
-                    .edit()
-                    .putBoolean(key, newCheckedState)
-                    .apply()
-            }
+            .clickable { onCheckedChange(!isChecked) }
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -100,14 +76,7 @@ private fun SwitchPreference(
         }
         Switch(
             checked = isChecked,
-            onCheckedChange = { newCheckedState ->
-                // This lambda is called when the user drags the switch thumb.
-                isChecked = newCheckedState
-                sharedPreferences
-                    .edit()
-                    .putBoolean(key, newCheckedState)
-                    .apply()
-            }
+            onCheckedChange = onCheckedChange
         )
     }
 }

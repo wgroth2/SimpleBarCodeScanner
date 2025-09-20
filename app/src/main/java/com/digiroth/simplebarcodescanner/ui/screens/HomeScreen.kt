@@ -17,6 +17,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,7 +27,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.preference.PreferenceManager
 import com.digiroth.simplebarcodescanner.ui.components.AboutDialog
 import com.digiroth.simplebarcodescanner.ui.components.TopAppBarMenu
 import com.google.mlkit.vision.barcode.common.Barcode
@@ -38,13 +38,13 @@ import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 @Composable
 fun HomeScreen(
     onScanSuccess: (String, Int, Int) -> Unit,
-    onNavigateToSettings: () -> Unit
+    onNavigateToSettings: () -> Unit,
+    viewModel: SettingsViewModel
 ) {
     val context: Context = LocalContext.current
     var showAboutDialog by remember { mutableStateOf(false) }
 
-    val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-    val isAutoZoomEnabled = sharedPreferences.getBoolean("auto_zoom", true)
+    val isAutoZoomEnabled by viewModel.isAutoZoomEnabled.collectAsState()
 
     val scanner: GmsBarcodeScanner = remember(isAutoZoomEnabled) {
         Log.d("ScannerInit", "Scanner is being re-initialized with auto-zoom: $isAutoZoomEnabled")

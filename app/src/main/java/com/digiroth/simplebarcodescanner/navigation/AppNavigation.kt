@@ -4,15 +4,21 @@
 package com.digiroth.simplebarcodescanner.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.digiroth.simplebarcodescanner.data.SettingsRepository
 import com.digiroth.simplebarcodescanner.ui.screens.HomeScreen
 import com.digiroth.simplebarcodescanner.ui.screens.ResultScreen
 import com.digiroth.simplebarcodescanner.ui.screens.SettingsScreen
+import com.digiroth.simplebarcodescanner.ui.screens.SettingsViewModel
+import com.digiroth.simplebarcodescanner.ui.screens.SettingsViewModelFactory
 import java.net.URLDecoder
 import java.net.URLEncoder
 
@@ -30,6 +36,11 @@ sealed class Screen(val route: String) {
 @Composable
 fun AppNavigation() {
     val navController: NavHostController = rememberNavController()
+    val context = LocalContext.current
+    val settingsRepository = remember { SettingsRepository(context) }
+    val settingsViewModel: SettingsViewModel = viewModel(
+        factory = SettingsViewModelFactory(settingsRepository)
+    )
 
     NavHost(
         navController = navController,
@@ -42,7 +53,8 @@ fun AppNavigation() {
                 },
                 onNavigateToSettings = {
                     navController.navigate(Screen.Settings.route)
-                }
+                },
+                viewModel = settingsViewModel
             )
         }
 
@@ -72,7 +84,8 @@ fun AppNavigation() {
 
         composable(route = Screen.Settings.route) {
             SettingsScreen(
-                onBack = { navController.popBackStack() }
+                onBack = { navController.popBackStack() },
+                viewModel = settingsViewModel
             )
         }
     }
