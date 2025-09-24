@@ -25,8 +25,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.digiroth.simplebarcodescanner.R
 import com.digiroth.simplebarcodescanner.ui.components.AboutDialog
 import com.digiroth.simplebarcodescanner.ui.components.TopAppBarMenu
 import com.google.mlkit.vision.barcode.common.Barcode
@@ -75,7 +77,7 @@ fun HomeScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("PDF Barcode Reader") },
+                title = { Text(stringResource(R.string.pdf_barcode_reader)) },
                 actions = {
                     TopAppBarMenu(
                         onSettingsClick = onNavigateToSettings,
@@ -96,22 +98,22 @@ fun HomeScreen(
                 onClick = {
                     scanner.startScan()
                         .addOnSuccessListener { barcode ->
-                            val rawValue = barcode.rawValue ?: "No data"
+                            val rawValue = barcode.rawValue ?: context.getString(R.string.no_data)
                             val valueType = barcode.valueType
                             val format = barcode.format
 
                             Log.i("BarcodeSuccess", "Barcode raw value: $rawValue, Type: $valueType, Format: $format")
-                            Toast.makeText(context, "Barcode Scanned: $rawValue", Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, context.getString(R.string.barcode_scanned, rawValue), Toast.LENGTH_LONG).show()
 
                             onScanSuccess(rawValue, valueType, format)
                         }
                         .addOnCanceledListener {
                             Log.i("BarcodeCanceled", "Scan canceled by user.")
-                            Toast.makeText(context, "Scan canceled", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, context.getString(R.string.scan_canceled), Toast.LENGTH_SHORT).show()
                         }
                         .addOnFailureListener { e ->
                             Log.e("BarcodeFailure", "Scan failed", e)
-                            Toast.makeText(context, "Scan failed: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, context.getString(R.string.scan_failed, e.localizedMessage), Toast.LENGTH_LONG).show()
                         }
                 },
                 modifier = Modifier
@@ -119,7 +121,7 @@ fun HomeScreen(
                     .height(60.dp)
             ) {
                 Text(
-                    text = "Scan",
+                    text = stringResource(R.string.scan),
                     fontSize = 20.sp
                 )
             }

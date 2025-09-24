@@ -24,7 +24,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.digiroth.simplebarcodescanner.R
+
 //TODO: Check this settings on Startuop
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,10 +39,10 @@ fun SettingsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Settings") },
+                title = { Text(stringResource(R.string.settings)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -48,8 +51,8 @@ fun SettingsScreen(
         Column(modifier = Modifier.padding(paddingValues)) {
             val isAutoZoomEnabled by viewModel.isAutoZoomEnabled.collectAsState()
             SwitchPreference(
-                title = "Enable Auto-Zoom",
-                summary = "Automatically zoom in on barcodes",
+                title = stringResource(R.string.enable_auto_zoom),
+                summary = stringResource(R.string.enable_auto_zoom_summary),
                 isChecked = isAutoZoomEnabled,
                 onCheckedChange = { viewModel.updateAutoZoom(it) }
             )

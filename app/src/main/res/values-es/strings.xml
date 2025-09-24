@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">SimpleBarCodeScanner</string>
+    <string name="take_photo">Tomar foto</string>
+    <string name="pdf_barcode_reader">Lector de códigos de barras PDF</string>
+    <string name="no_data">Sin datos</string>
+    <string name="barcode_scanned">Código de barras escaneado: %s</string>
+    <string name="scan_canceled">Escaneo cancelado</string>
+    <string name="scan_failed">Escaneo fallido: %s</string>
+    <string name="scan">Escanear</string>
+    <string name="scan_result">Resultado del escaneo</string>
+    <string name="back">Atrás</string>
+    <string name="scanned_code">Código escaneado:</string>
+    <string name="barcode_scan_result">Resultado del escaneo del código de barras (%s)</string>
+    <string name="share_result">Compartir resultado</string>
+    <string name="scan_again">Escanear de nuevo</string>
+    <string name="barcode_type_url">URL</string>
+    <string name="barcode_type_drivers_license">Licencia de conducir</string>
+    <string name="barcode_type_text">Texto</string>
+    <string name="barcode_type_product">Producto</string>
+    <string name="barcode_type_isbn">ISBN</string>
+    <string name="barcode_type_wifi">Red Wi-Fi</string>
+    <string name="barcode_type_geo">Punto geográfico</string>
+    <string name="barcode_type_calendar_event">Evento de calendario</string>
+    <string name="barcode_type_contact_info">Información de contacto</string>
+    <string name="barcode_type_email">Correo electrónico</string>
+    <string name="barcode_type_phone">Número de teléfono</string>
+    <string name="barcode_type_sms">SMS</string>
+    <string name="barcode_type_unknown">Tipo desconocido</string>
+    <string name="barcode_type_info">Tipo: %1$s (%2$s)\n\n</string>
+    <string name="settings">Configuración</string>
+    <string name="enable_auto_zoom">Habilitar Auto-Zoom</string>
+    <string name="enable_auto_zoom_summary">Acercar automáticamente en códigos de barras</string>
+    <string name="share_barcode_result_via">Compartir resultado del código de barras a través de</string>
+</resources>
