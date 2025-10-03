@@ -20,9 +20,23 @@ class SettingsViewModel(private val repository: SettingsRepository) : ViewModel(
             initialValue = true // Initial default value
         )
 
+    // Expose the language setting as a StateFlow
+    val appLanguage: StateFlow<String> = repository.appLanguage
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = "en" // Initial default value, matches repository
+        )
+
     fun updateAutoZoom(isEnabled: Boolean) {
         viewModelScope.launch {
             repository.setAutoZoomEnabled(isEnabled)
+        }
+    }
+
+    fun updateLanguage(languageCode: String) {
+        viewModelScope.launch {
+            repository.setAppLanguage(languageCode)
         }
     }
 }

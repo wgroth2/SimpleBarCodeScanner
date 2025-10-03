@@ -37,4 +37,5 @@
     <string name="by_bill_roth">By Bill Roth</string>
     <string name="build_time">Build Time: %s</string>
     <string name="ok">OK</string>
+    <string name="language">Language</string>
 </resources>

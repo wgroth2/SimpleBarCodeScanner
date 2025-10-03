@@ -34,27 +34,30 @@ import com.digiroth.simplebarcodescanner.R
 
 @Composable
 fun TopAppBarMenu(
+    settingsText: String,
+    aboutText: String,
+    menuContentDescText: String,
     onSettingsClick: () -> Unit,
     onAboutClick: () -> Unit
 ) {
     var showMenu by remember { mutableStateOf(false) }
 
     IconButton(onClick = { showMenu = true }) {
-        Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.menu))
+        Icon(Icons.Default.MoreVert, contentDescription = menuContentDescText)
     }
     DropdownMenu(
         expanded = showMenu,
         onDismissRequest = { showMenu = false }
     ) {
         DropdownMenuItem(
-            text = { Text(stringResource(R.string.settings)) },
+            text = { Text(settingsText) },
             onClick = {
                 onSettingsClick()
                 showMenu = false
             }
         )
         DropdownMenuItem(
-            text = { Text(stringResource(R.string.about)) },
+            text = { Text(aboutText) },
             onClick = {
                 onAboutClick()
                 showMenu = false

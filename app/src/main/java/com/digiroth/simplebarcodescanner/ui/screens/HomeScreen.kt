@@ -80,6 +80,9 @@ fun HomeScreen(
                 title = { Text(stringResource(R.string.pdf_barcode_reader)) },
                 actions = {
                     TopAppBarMenu(
+                        settingsText = stringResource(R.string.settings),
+                        aboutText = stringResource(R.string.about),
+                        menuContentDescText = stringResource(R.string.menu),
                         onSettingsClick = onNavigateToSettings,
                         onAboutClick = { showAboutDialog = true }
                     )

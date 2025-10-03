@@ -82,6 +82,9 @@ fun ResultScreen(
                 },
                 actions = {
                     TopAppBarMenu(
+                        settingsText = stringResource(R.string.settings),
+                        aboutText = stringResource(R.string.about),
+                        menuContentDescText = stringResource(R.string.menu),
                         onSettingsClick = onNavigateToSettings,
                         onAboutClick = { showAboutDialog = true }
                     )

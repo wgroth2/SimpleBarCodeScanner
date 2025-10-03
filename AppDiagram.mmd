@@ -1,0 +1,48 @@
+graph TD
+    subgraph "MainActivity (Activity Entry Point)"
+        MA[MainActivity]
+    end
+
+    subgraph "Navigation (Compose)"
+        AN[AppNavigation]
+    end
+
+    subgraph "UI Screens (Composables)"
+        HS[HomeScreen]
+        RS[ResultScreen]
+        SS[SettingsScreen]
+    end
+
+    subgraph "UI Components (Composables)"
+        TAM[TopAppBarMenu]
+        AD[AboutDialog]
+    end
+
+    subgraph "ViewModel (Business Logic)"
+        SVM[SettingsViewModel]
+    end
+
+    subgraph "Data Layer"
+        SR[SettingsRepository]
+        DS[DataStore Preferences]
+    end
+
+    %% -- Connections --
+
+    MA -- "Holds language state" --> AN
+    AN -- "Controls navigation to" --> HS
+    AN -- "Controls navigation to" --> RS
+    AN -- "Controls navigation to" --> SS
+
+    HS -- "Uses" --> TAM
+    HS -- "Uses" --> AD
+    RS -- "Uses" --> TAM
+    RS -- "Uses" --> AD
+
+    HS -- "Depends on" --> SVM
+    SS -- "Depends on" --> SVM
+
+    SS -- "Updates language state in" --> MA
+
+    SVM -- "Depends on" --> SR
+    SR -- "Reads/Writes to" --> DS

@@ -6,6 +6,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -22,6 +23,7 @@ class SettingsRepository(private val context: Context) {
     // Define the keys for your preferences. This provides type safety.
     private object PreferenceKeys {
         val AUTO_ZOOM_ENABLED = booleanPreferencesKey("auto_zoom")
+        val APP_LANGUAGE = stringPreferencesKey("app_language")
     }
 
     /**
@@ -35,6 +37,15 @@ class SettingsRepository(private val context: Context) {
         }
 
     /**
+     * A flow that emits the current language preference.
+     * Defaults to 'en' (English) if the preference is not yet set.
+     */
+    val appLanguage: Flow<String> = context.dataStore.data
+        .map { preferences ->
+            preferences[PreferenceKeys.APP_LANGUAGE] ?: "en" // Default to English
+        }
+
+    /**
      * Updates the auto-zoom preference. This is a suspend function, ensuring
      * it is called from a coroutine and does not block the UI thread.
      *
@@ -43,6 +54,17 @@ class SettingsRepository(private val context: Context) {
     suspend fun setAutoZoomEnabled(isEnabled: Boolean) {
         context.dataStore.edit { preferences ->
             preferences[PreferenceKeys.AUTO_ZOOM_ENABLED] = isEnabled
+        }
+    }
+
+    /**
+     * Updates the app language preference.
+     *
+     * @param languageCode The new language code to save (e.g., "en", "es").
+     */
+    suspend fun setAppLanguage(languageCode: String) {
+        context.dataStore.edit { preferences ->
+            preferences[PreferenceKeys.APP_LANGUAGE] = languageCode
         }
     }
 }

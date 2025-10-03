@@ -34,7 +34,7 @@ sealed class Screen(val route: String) {
 }
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(onLanguageChange: (String) -> Unit) {
     val navController: NavHostController = rememberNavController()
     val context = LocalContext.current
     val settingsRepository = remember { SettingsRepository(context) }
@@ -85,7 +85,8 @@ fun AppNavigation() {
         composable(route = Screen.Settings.route) {
             SettingsScreen(
                 onBack = { navController.popBackStack() },
-                viewModel = settingsViewModel
+                viewModel = settingsViewModel,
+                onLanguageChange = onLanguageChange
             )
         }
     }
