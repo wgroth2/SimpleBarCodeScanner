@@ -26,9 +26,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.digiroth.simplebarcodescanner.BuildConfig
+import com.digiroth.simplebarcodescanner.R
 
 @Composable
 fun TopAppBarMenu(
@@ -38,21 +40,21 @@ fun TopAppBarMenu(
     var showMenu by remember { mutableStateOf(false) }
 
     IconButton(onClick = { showMenu = true }) {
-        Icon(Icons.Default.MoreVert, contentDescription = "Menu")
+        Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.menu))
     }
     DropdownMenu(
         expanded = showMenu,
         onDismissRequest = { showMenu = false }
     ) {
         DropdownMenuItem(
-            text = { Text("Settings") },
+            text = { Text(stringResource(R.string.settings)) },
             onClick = {
                 onSettingsClick()
                 showMenu = false
             }
         )
         DropdownMenuItem(
-            text = { Text("About") },
+            text = { Text(stringResource(R.string.about)) },
             onClick = {
                 onAboutClick()
                 showMenu = false
@@ -65,25 +67,25 @@ fun TopAppBarMenu(
 fun AboutDialog(onDismissRequest: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismissRequest,
-        title = { Text(text = "About This App") },
+        title = { Text(text = stringResource(R.string.about_this_app)) },
         text = {
             Column {
                 Text(
-                    text = "PDF Barcode Reader",
+                    text = stringResource(R.string.pdf_barcode_reader),
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "By Bill Roth",
+                    text = stringResource(R.string.by_bill_roth),
                     style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Build Time: ${BuildConfig.BUILD_TIME}",
+                    text = stringResource(R.string.build_time, BuildConfig.BUILD_TIME),
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
@@ -96,7 +98,7 @@ fun AboutDialog(onDismissRequest: () -> Unit) {
                 horizontalArrangement = Arrangement.Center
             ) {
                 TextButton(onClick = onDismissRequest) {
-                    Text("OK")
+                    Text(stringResource(R.string.ok))
                 }
             }
         }

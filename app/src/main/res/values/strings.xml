@@ -31,4 +31,10 @@
     <string name="enable_auto_zoom">Enable Auto-Zoom</string>
     <string name="enable_auto_zoom_summary">Automatically zoom in on barcodes</string>
     <string name="share_barcode_result_via">Share barcode result via</string>
+    <string name="menu">Menu</string>
+    <string name="about">About</string>
+    <string name="about_this_app">About This App</string>
+    <string name="by_bill_roth">By Bill Roth</string>
+    <string name="build_time">Build Time: %s</string>
+    <string name="ok">OK</string>
 </resources>

@@ -31,4 +31,10 @@
     <string name="enable_auto_zoom">Habilitar Auto-Zoom</string>
     <string name="enable_auto_zoom_summary">Acercar automáticamente en códigos de barras</string>
     <string name="share_barcode_result_via">Compartir resultado del código de barras a través de</string>
+    <string name="menu">Menú</string>
+    <string name="about">Acerca de</string>
+    <string name="about_this_app">Acerca de esta aplicación</string>
+    <string name="by_bill_roth">Por Bill Roth</string>
+    <string name="build_time">Hora de compilación: %s</string>
+    <string name="ok">OK</string>
 </resources>
