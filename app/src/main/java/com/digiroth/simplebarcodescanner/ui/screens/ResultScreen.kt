@@ -57,14 +57,16 @@ fun ResultScreen(
     valueType: Int,
     format: Int,
     onBack: () -> Unit,
-    onNavigateToSettings: () -> Unit
+    onNavigateToSettings: () -> Unit,
+    onNavigateToHistory: () -> Unit
 ) {
     val context: Context = LocalContext.current
     val displayData = formatDisplayData(
         context = context,
         data = scannedData,
         valueType = valueType,
-        format = format
+        format = format,
+        getBarcodeFormatName = { fmt -> getBarcodeFormatName(fmt) }
     )
     var showAboutDialog by remember { mutableStateOf(false) }
 
@@ -84,11 +86,14 @@ fun ResultScreen(
                     TopAppBarMenu(
                         settingsText = stringResource(R.string.settings),
                         aboutText = stringResource(R.string.about),
+                        historyText = stringResource(R.string.scan_history),
                         menuContentDescText = stringResource(R.string.menu),
                         onSettingsClick = onNavigateToSettings,
-                        onAboutClick = { showAboutDialog = true }
+                        onAboutClick = { showAboutDialog = true },
+                        onHistoryClick = onNavigateToHistory
                     )
                 }
+
             )
         }
     ) { paddingValues ->
@@ -177,26 +182,13 @@ private fun getBarcodeTypeName(context: Context, valueType: Int): String {
     }
 }
 
-private fun getBarcodeFormatName(format: Int): String {
-    return when (format) {
-        Barcode.FORMAT_CODE_128 -> "FORMAT_CODE_128"
-        Barcode.FORMAT_CODE_39 -> "FORMAT_CODE_39"
-        Barcode.FORMAT_CODE_93 -> "FORMAT_CODE_93"
-        Barcode.FORMAT_CODABAR -> "FORMAT_CODABAR"
-        Barcode.FORMAT_DATA_MATRIX -> "FORMAT_DATA_MATRIX"
-        Barcode.FORMAT_EAN_13 -> "FORMAT_EAN_13"
-        Barcode.FORMAT_EAN_8 -> "FORMAT_EAN_8"
-        Barcode.FORMAT_ITF -> "FORMAT_ITF"
-        Barcode.FORMAT_QR_CODE -> "FORMAT_QR_CODE"
-        Barcode.FORMAT_UPC_A -> "FORMAT_UPC_A"
-        Barcode.FORMAT_UPC_E -> "FORMAT_UPC_E"
-        Barcode.FORMAT_PDF417 -> "FORMAT_PDF417"
-        Barcode.FORMAT_AZTEC -> "FORMAT_AZTEC"
-        else -> "UNKNOWN_FORMAT"
-    }
-}
-
-private fun formatDisplayData(context: Context, data: String, valueType: Int, format: Int): String {
+private fun formatDisplayData(
+    context: Context,
+    data: String,
+    valueType: Int,
+    format: Int,
+    getBarcodeFormatName: (Int) -> String
+): String {
     val typeName = getBarcodeTypeName(context, valueType)
     val formatName = getBarcodeFormatName(format)
     val header = context.getString(R.string.barcode_type_info, typeName, formatName)

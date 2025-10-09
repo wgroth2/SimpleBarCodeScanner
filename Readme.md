@@ -28,39 +28,56 @@ graph TD
         HS[HomeScreen]
         RS[ResultScreen]
         SS[SettingsScreen]
+        SHS[ScanHistoryScreen]
     end
 
     subgraph "UI Components (Composables)"
         TAM[TopAppBarMenu]
         AD[AboutDialog]
+        SHI[ScanHistoryItem]
     end
 
     subgraph "ViewModel (Business Logic)"
         SVM[SettingsViewModel]
+        SHVM[ScanHistoryViewModel]
     end
 
-    subgraph "Data Layer"
-        SR[SettingsRepository]
-        DS[DataStore Preferences]
-    end
+subgraph "Data Layer"
+SR[SettingsRepository]
+DS[DataStore Preferences]
+SHR[ScanHistoryRepository]
+DB["ScanHistoryDatabase (Room)"]
+end
 
-    %% -- Connections --
+%% -- Connections --
 
-    MA -- "Holds language state" --> AN
-    AN -- "Controls navigation to" --> HS
-    AN -- "Controls navigation to" --> RS
-    AN -- "Controls navigation to" --> SS
+MA -- "Holds language state" --> AN
 
-    HS -- "Uses" --> TAM
-    HS -- "Uses" --> AD
-    RS -- "Uses" --> TAM
-    RS -- "Uses" --> AD
+%% Navigation
+AN -- "Controls navigation to" --> HS
+AN -- "Controls navigation to" --> RS
+AN -- "Controls navigation to" --> SS
+AN -- "Controls navigation to" --> SHS
 
-    HS -- "Depends on" --> SVM
-    SS -- "Depends on" --> SVM
+%% UI and Component Usage
+HS -- "Uses" --> TAM
+HS -- "Uses" --> AD
+RS -- "Uses" --> TAM
+RS -- "Uses" --> AD
+SHS -- "Uses" --> SHI
 
-    SS -- "Updates language state in" --> MA
+%% Settings Flow
+HS -- "Depends on" --> SVM
+SS -- "Depends on" --> SVM
+SVM -- "Depends on" --> SR
+SR -- "Reads/Writes to" --> DS
+SS -- "Updates language state in" --> MA
 
-    SVM -- "Depends on" --> SR
-    SR -- "Reads/Writes to" --> DS
+%% Scan History Flow
+HS -- "Writes to" --> SHR
+SHS -- "Depends on" --> SHVM
+SHVM -- "Depends on" --> SHR
+SHR -- "Reads/Writes to" --> DB
+
+
 ```

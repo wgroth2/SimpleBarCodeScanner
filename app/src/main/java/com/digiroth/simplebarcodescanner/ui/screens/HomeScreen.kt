@@ -21,6 +21,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,22 +30,28 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.digiroth.simplebarcodescanner.R
+import com.digiroth.simplebarcodescanner.data.Scan
+import com.digiroth.simplebarcodescanner.data.ScanHistoryRepository
 import com.digiroth.simplebarcodescanner.ui.components.AboutDialog
 import com.digiroth.simplebarcodescanner.ui.components.TopAppBarMenu
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanner
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     onScanSuccess: (String, Int, Int) -> Unit,
     onNavigateToSettings: () -> Unit,
-    viewModel: SettingsViewModel
+    onNavigateToHistory: () -> Unit,
+    viewModel: SettingsViewModel,
+    scanHistoryRepository: ScanHistoryRepository
 ) {
     val context: Context = LocalContext.current
     var showAboutDialog by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
 
     val isAutoZoomEnabled by viewModel.isAutoZoomEnabled.collectAsState()
 
@@ -82,9 +89,11 @@ fun HomeScreen(
                     TopAppBarMenu(
                         settingsText = stringResource(R.string.settings),
                         aboutText = stringResource(R.string.about),
+                        historyText = stringResource(R.string.scan_history),
                         menuContentDescText = stringResource(R.string.menu),
                         onSettingsClick = onNavigateToSettings,
-                        onAboutClick = { showAboutDialog = true }
+                        onAboutClick = { showAboutDialog = true },
+                        onHistoryClick = onNavigateToHistory
                     )
                 }
             )
@@ -104,6 +113,17 @@ fun HomeScreen(
                             val rawValue = barcode.rawValue ?: context.getString(R.string.no_data)
                             val valueType = barcode.valueType
                             val format = barcode.format
+
+                            scope.launch {
+                                scanHistoryRepository.insert(
+                                    Scan(
+                                        timestamp = System.currentTimeMillis(),
+                                        format = format,
+                                        valueType = valueType,
+                                        rawValue = rawValue
+                                    )
+                                )
+                            }
 
                             Log.i("BarcodeSuccess", "Barcode raw value: $rawValue, Type: $valueType, Format: $format")
                             Toast.makeText(context, context.getString(R.string.barcode_scanned, rawValue), Toast.LENGTH_LONG).show()

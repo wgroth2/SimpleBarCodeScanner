@@ -1,0 +1,45 @@
+---
+title: Simple Barcode Scanner - Class Diagram
+---
+classDiagram
+    direction TB
+
+    class MainActivity
+    class AppNavigation
+    class HomeScreen
+    class ResultScreen
+    class SettingsScreen
+    class ScanHistoryScreen
+    class TopAppBarMenu
+    class AboutDialog
+    class ScanHistoryItem
+    class SettingsViewModel
+    class ScanHistoryViewModel
+    class SettingsRepository
+    class DataStore
+    class ScanHistoryRepository
+    class ScanHistoryDatabase
+
+    MainActivity --> AppNavigation : hosts
+    AppNavigation --> HomeScreen
+    AppNavigation --> ResultScreen
+    AppNavigation --> SettingsScreen
+    AppNavigation --> ScanHistoryScreen
+
+    HomeScreen ..> TopAppBarMenu : uses
+    HomeScreen ..> AboutDialog : uses
+    ResultScreen ..> TopAppBarMenu : uses
+    ScanHistoryScreen ..> ScanHistoryItem : uses
+
+    HomeScreen ..> SettingsViewModel
+    SettingsScreen ..> SettingsViewModel
+
+    SettingsViewModel --> SettingsRepository
+    SettingsRepository --> DataStore
+
+    HomeScreen --> ScanHistoryRepository
+    ScanHistoryScreen ..> ScanHistoryViewModel
+    ScanHistoryViewModel --> ScanHistoryRepository
+    ScanHistoryRepository --> ScanHistoryDatabase
+
+    SettingsScreen ..> MainActivity : callback
