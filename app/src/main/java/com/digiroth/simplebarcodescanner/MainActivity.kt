@@ -4,6 +4,7 @@ package com.digiroth.simplebarcodescanner
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.LocaleList
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.CompositionLocalProvider
@@ -32,7 +33,6 @@ class MainActivity : ComponentActivity() {
             val settingsRepository = remember { SettingsRepository(applicationContext) }
             val scope = rememberCoroutineScope()
 
-            // A state holder for the current language. It starts as null until loaded.
             var currentLanguage by remember { mutableStateOf<String?>(null) }
 
             // This effect runs once to load the initial language from the repository.
@@ -71,13 +71,15 @@ class MainActivity : ComponentActivity() {
 /**
  * Creates a new Context with a specific language configuration.
  */
+@Suppress("DEPRECATION")
+// TODO: Fix deprecation somedaY
 private fun createLocaleContext(context: Context, languageCode: String): Context {
     val locale = Locale(languageCode)
     Locale.setDefault(locale) // Set default locale for consistency
 
     val configuration = Configuration(context.resources.configuration)
-    configuration.setLocale(locale)
-    configuration.setLayoutDirection(locale)
+    val localeList = LocaleList(locale)
+    configuration.setLocales(localeList)
 
     return context.createConfigurationContext(configuration)
 }
