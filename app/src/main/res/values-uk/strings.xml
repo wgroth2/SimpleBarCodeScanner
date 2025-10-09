@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Сканер штрих-кодів</string>
     <string name="app_version_info">Версія %1$s</string>
-    <string name="pdf_barcode_reader">Читач штрих-кодів</string>
+    <string name="app_name_headline">Читач штрих-кодів</string>
     <string name="scan">Сканувати</string>
     <string name="no_data">Дані у штрих-коді не знайдено</string>
     <string name="scan_canceled">Сканування скасовано</string>
@@ -33,7 +33,7 @@
     <string name="share_barcode_result_via">Поділитися результатом штрих-коду через</string>
     <string name="about_dialog_title">Про Simple Barcode Scanner</string>
     <string name="version_info">Версія %1$s</string>
-    <string name="copyright_notice">Copyright © 2024 Bill Roth</string>
+    <string name="copyright_notice">Copyright © 2025 Bill Roth</string>
     <string name="license_info">Ця програма ліцензована за ліцензією Apache, версія 2.0. Ви можете отримати копію ліцензії за адресою:</string>
     <string name="license_url">http://www.apache.org/licenses/LICENSE-2.0</string>
     <string name="ok">OK</string>

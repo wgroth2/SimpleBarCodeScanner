@@ -6,38 +6,32 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import com.digiroth.simplebarcodescanner.BuildConfig
 import com.digiroth.simplebarcodescanner.R
 
 /**
- * A dialog that displays information about the application, including its version,
- * copyright, and license details. It uses the [HyperlinkText] composable to make
- * the license URL clickable.
+ * A dialog that displays information about the application.
  *
- * @param onDismissRequest A lambda function to be invoked when the dialog is dismissed,
- *                         either by clicking the confirm button or by clicking outside the dialog.
+ * This composable now accepts pre-resolved strings to ensure it works correctly
+ * with dynamic language changes, as dialogs may not inherit the correct
+ * CompositionLocal context.
+ *
+ * @param dialogTitle The resolved title string for the dialog.
+ * @param dialogText The resolved body text for the dialog.
+ * @param onDismissRequest A lambda function to be invoked when the dialog is dismissed.
  */
 @Composable
-fun AboutDialog(onDismissRequest: () -> Unit) {
+fun AboutDialog(
+    dialogTitle: String,
+    dialogText: String,
+    onDismissRequest: () -> Unit
+) {
     AlertDialog(
         onDismissRequest = onDismissRequest,
         title = {
-            Text(text = stringResource(id = R.string.about_dialog_title))
+            Text(text = dialogTitle)
         },
         text = {
-            // Combine multiple string resources to build the dialog's content.
-            // BuildConfig.VERSION_NAME provides the version from the build.gradle file.
-            val fullText = stringResource(R.string.version_info, BuildConfig.VERSION_NAME) +
-                "\n" +
-                stringResource(R.string.build_time_info, BuildConfig.BUILD_TIME) +
-                "\n\n" +
-                stringResource(R.string.copyright_notice) +
-                "\n\n" +
-                stringResource(R.string.license_info) +
-                "\n" +
-                stringResource(R.string.license_url) // The HyperlinkText will handle this URL
-
-            HyperlinkText(text = fullText)
+            HyperlinkText(text = dialogText)
         },
         confirmButton = {
             TextButton(onClick = onDismissRequest) {

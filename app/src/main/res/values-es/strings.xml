@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Escáner de Código de Barras</string>
     <string name="app_version_info">Versión %1$s</string>
-    <string name="pdf_barcode_reader">Lector de Códigos de Barras</string>
+    <string name="app_name_headline">Lector de Códigos de Barras</string>
     <string name="scan">Escanear</string>
     <string name="no_data">No se encontraron datos en el código de barras</string>
     <string name="scan_canceled">Escaneo cancelado</string>
@@ -33,7 +33,7 @@
     <string name="share_barcode_result_via">Compartir resultado del código de barras vía</string>
     <string name="about_dialog_title">Acerca de Simple Barcode Scanner</string>
     <string name="version_info">Versión %1$s</string>
-    <string name="copyright_notice">Copyright © 2024 Bill Roth</string>
+    <string name="copyright_notice">Copyright © 2025 Bill Roth</string>
     <string name="license_info">Esta aplicación está licenciada bajo la Licencia Apache, Versión 2.0. Puede obtener una copia de la Licencia en:</string>
     <string name="license_url">http://www.apache.org/licenses/LICENSE-2.0</string>
     <string name="ok">Aceptar</string>

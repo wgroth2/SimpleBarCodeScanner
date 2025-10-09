@@ -33,6 +33,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.digiroth.simplebarcodescanner.AamvaFormatter
+import com.digiroth.simplebarcodescanner.BuildConfig
 import com.digiroth.simplebarcodescanner.R
 import com.digiroth.simplebarcodescanner.ui.components.AboutDialog
 import com.digiroth.simplebarcodescanner.ui.components.HyperlinkText
@@ -160,7 +161,22 @@ fun ResultScreen(
     }
 
     if (showAboutDialog) {
-        AboutDialog(onDismissRequest = { showAboutDialog = false })
+        val dialogTitle = stringResource(id = R.string.about_dialog_title)
+        val fullText = stringResource(R.string.version_info, BuildConfig.VERSION_NAME) +
+            "\n" +
+            stringResource(R.string.build_time_info, BuildConfig.BUILD_TIME) +
+            "\n\n" +
+            stringResource(R.string.copyright_notice) +
+            "\n\n" +
+            stringResource(R.string.license_info) +
+            "\n" +
+            stringResource(R.string.license_url)
+
+        AboutDialog(
+            dialogTitle = dialogTitle,
+            dialogText = fullText,
+            onDismissRequest = { showAboutDialog = false }
+        )
     }
 }
 

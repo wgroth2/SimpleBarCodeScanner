@@ -2,7 +2,7 @@
     <string name="app_name">Simple Barcode Scanner</string>
     <string name="app_version_info">Version %1$s</string>
     <string name="build_time_info">Built on: %1$s</string>
-    <string name="pdf_barcode_reader">PDF Barcode Reader</string>
+    <string name="app_name_headline">Simple Barcode Reader</string>
     <string name="scan">Scan</string>
     <string name="no_data">No data found in barcode</string>
     <string name="scan_canceled">Scan canceled</string>
@@ -33,7 +33,7 @@
     <string name="share_barcode_result_via">Share barcode result via</string>
     <string name="about_dialog_title">About Simple Barcode Scanner</string>
     <string name="version_info">Version %1$s</string>
-    <string name="copyright_notice">Copyright © 2024 Bill Roth</string>
+    <string name="copyright_notice">Copyright © 2025 Bill Roth</string>
     <string name="license_info">This app is licensed under the Apache License, Version 2.0. You may obtain a copy of the License at:</string>
     <string name="license_url">http://www.apache.org/licenses/LICENSE-2.0</string>
     <string name="ok">OK</string>
