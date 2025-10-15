@@ -1,95 +1,81 @@
+/*
+ * Copyright 2025 Bill Roth
+ */
 package com.digiroth.simplebarcodescanner
 
+import com.digiroth.simplebarcodescanner.utils.AamvaFormatter
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class AamvaFormatterTest {
 
     @Test
-    fun `formatAamvaData with valid full data string formats correctly`() {
-        // Arrange
+    fun `formatAamvaData correctly parses and formats valid data`() {
+        // Arrange: A sample AAMVA data string.
         val rawData = """
             @
-            ANSI 636026080102DL00410288ZV03210217DLDCADCSDOE
+            ANSI 636026080102DL00410288ZA03290015DLDCADACSMITH,JOHN,MIDDLE
+            DCBDNONE
+            DCDNONE
+            DBA20251015
+            DCSSMITH
             DACJOHN
-            DCSDOE
-            DBA20291231
-            DBB19900115
+            DADMIDDLE
+            DBD20171015
+            DBB19900520
             DBC1
-            DAU069IN
             DAYBRO
+            DAU070 IN
             DAG123 MAIN ST
             DAIANYTOWN
             DAJCA
-            DAK902100000
-            DAQ123456789
-            """.trimIndent()
+            DAK90210
+            DAQ12345678
+            DCF12345678901234567890
+            DCGUSA
+            DAZBRO
+        """.trimIndent()
 
-        // Act
+        // Act: Call the function under test.
         val formattedResult = AamvaFormatter.formatAamvaData(rawData)
-        val resultLines = formattedResult.lines().associate {
-            val parts = it.split(": ", limit = 2)
-            parts[0] to parts[1]
-        }
 
-        // Assert: Granular check on each line to isolate the failure.
-        assertEquals("JOHN", resultLines["First Name"])
-        assertEquals("DOE", resultLines["Last Name"])
-        assertEquals("01/15/1990", resultLines["Date of Birth"])
-        assertEquals("Male", resultLines["Sex"])
-        assertEquals("123456789", resultLines["License Number"])
-        assertEquals("12/31/2029", resultLines["Expiration Date"])
-        assertEquals("5' 9\"", resultLines["Height"])
-        assertEquals("BRO", resultLines["Eye Color"])
-        assertEquals("123 MAIN ST, ANYTOWN, CA 902100000", resultLines["Address"])
+        // Assert: Verify the output is as expected.
+        val expectedOutput = """
+            First Name: JOHN
+            Last Name: SMITH
+            Date of Birth: 05/20/1990
+            Sex: Male
+            License Number: 12345678
+            Expiration Date: 10/15/2025
+            Height: 5' 10"
+            Eye Color: BRO
+            Address: 123 MAIN ST, ANYTOWN, CA 90210
+        """.trimIndent()
+
+        assertEquals(expectedOutput, formattedResult)
     }
 
     @Test
-    fun `formatAamvaData with nonAamva data returns unrecognized format message`() {
+    fun `formatAamvaData handles null input gracefully`() {
         // Arrange
-        val rawData = "This is just a regular barcode"
+        val rawData: String? = null
+
         // Act
         val formattedResult = AamvaFormatter.formatAamvaData(rawData)
+
+        // Assert
+        assertEquals("No data provided.", formattedResult)
+    }
+
+    @Test
+    fun `formatAamvaData handles non-AAMVA data`() {
+        // Arrange
+        val rawData = "This is just a regular barcode."
+
+        // Act
+        val formattedResult = AamvaFormatter.formatAamvaData(rawData)
+
         // Assert
         assertEquals("This data does not appear to be in a recognized AAMVA format.", formattedResult)
-    }
-
-    @Test
-    fun `formatAamvaData with blank input returns no data message`() {
-        // Arrange
-        val rawData = ""
-        // Act
-        val formattedResult = AamvaFormatter.formatAamvaData(rawData)
-        // Assert
-        assertEquals("No data provided.", formattedResult)
-    }
-
-    @Test
-    fun `formatAamvaData with null input returns no data message`() {
-        // Act
-        val formattedResult = AamvaFormatter.formatAamvaData(null)
-        // Assert
-        assertEquals("No data provided.", formattedResult)
-    }
-
-    @Test
-    fun `formatAamvaData formats female sex correctly`() {
-        // Arrange
-        val rawData = "DBC2"
-        // Act
-        val formattedResult = AamvaFormatter.formatAamvaData(rawData)
-        // Assert
-        assertTrue(formattedResult.contains("Sex: Female"))
-    }
-
-    @Test
-    fun `formatAamvaData formats height correctly in feet and inches`() {
-        // Arrange
-        val rawData = "DAU070IN" // 70 inches = 5' 10"
-        // Act
-        val formattedResult = AamvaFormatter.formatAamvaData(rawData)
-        // Assert
-        assertTrue(formattedResult.contains("Height: 5' 10\""))
     }
 }

@@ -29,7 +29,9 @@ object ShareUtils {
         // Always use createChooser to ensure the user can select an app from the system dialog.
         // The chooser will gracefully handle cases where no app can handle the intent, so we don't
         // need to call resolveActivity() beforehand, which can be problematic on some devices (e.g., Samsung).
-        val chooserIntent = Intent.createChooser(shareIntent, context.getString(R.string.share_barcode_result_via))
+        val chooserIntent = Intent.createChooser(shareIntent, context.getString(R.string.share_barcode_result_via)).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
         context.startActivity(chooserIntent)
     }
 }

@@ -38,7 +38,7 @@ fun ScanHistoryItem(
     onItemClick: (Scan) -> Unit,
     getBarcodeFormatName: (Int) -> String
 ) {
-    val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+    val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss z", Locale.getDefault())
     sdf.timeZone = TimeZone.getDefault()
     val scanTime = sdf.format(Date(scan.timestamp))
 

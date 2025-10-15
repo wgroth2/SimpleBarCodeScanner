@@ -4,7 +4,7 @@
 // noinspection Typo
 @file:Suppress("SpellCheckingInspection")
 
-package com.digiroth.simplebarcodescanner
+package com.digiroth.simplebarcodescanner.utils
 
 import java.text.SimpleDateFormat
 import java.util.Locale

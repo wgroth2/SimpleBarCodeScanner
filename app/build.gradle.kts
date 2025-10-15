@@ -2,6 +2,7 @@ import java.util.Properties
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.io.FileInputStream
 
 plugins {
     alias(libs.plugins.android.application)
@@ -10,11 +11,30 @@ plugins {
     alias(libs.plugins.ksp)
 }
 
+// Read properties from local.properties
+val properties = Properties()
+val localPropertiesFile = project.rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    properties.load(FileInputStream(localPropertiesFile))
+}
+
 android {
     namespace = "com.digiroth.simplebarcodescanner"
     //noinspection GradleDependency
     compileSdk = 36
-    android.buildFeatures.buildConfig = true
+    
+    buildFeatures {
+        buildConfig = true
+    }
+
+    signingConfigs {
+        create("release") {
+            storeFile = file("release.jks")
+            storePassword = properties.getProperty("RELEASE_STORE_PASSWORD")
+            keyAlias = properties.getProperty("RELEASE_KEY_ALIAS")
+            keyPassword = properties.getProperty("RELEASE_KEY_PASSWORD")
+        }
+    }
 
     defaultConfig {
         applicationId = "com.digiroth.simplebarcodescanner"
@@ -26,27 +46,21 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         
-        // Add this block to read from local.properties
-        val properties = Properties()
-        properties.load(project.rootProject.file("local.properties").inputStream())
-
         buildConfigField("String", "GEMINI_API_KEY", properties.getProperty("geminiApiKey"))
         buildConfigField("String", "BUILD_TIME", "\"${SimpleDateFormat("yyyy-MM-dd HH:mm:ss z", Locale.getDefault()).format(Date())}\"")
     }
 
     buildTypes {
         release {
-            //TODO: Create Build Variant
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
         debug {
-            // You might put the buildConfigField here if you only need the key in debug
-            // For example:
-            // buildConfigField("String", "DEBUG_GEMINI_API_KEY", properties.getProperty("geminiApiKey"))
+            // No signing config needed for debug, it uses a debug key by default
         }
     }
     compileOptions {
@@ -83,12 +97,18 @@ dependencies {
     ksp(libs.androidx.room.compiler)
 
     testImplementation(libs.junit)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Coroutines testing
+    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+
 
         // Coil for Jetpack Compose
     //implementation(libs.coil.compose) // Check for the latest version

@@ -32,7 +32,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.digiroth.simplebarcodescanner.AamvaFormatter
+import com.digiroth.simplebarcodescanner.utils.AamvaFormatter
 import com.digiroth.simplebarcodescanner.BuildConfig
 import com.digiroth.simplebarcodescanner.R
 import com.digiroth.simplebarcodescanner.ui.components.AboutDialog
@@ -180,7 +180,13 @@ fun ResultScreen(
     }
 }
 
-private fun getBarcodeTypeName(context: Context, valueType: Int): String {
+
+/* Returns a human-readable name for the given barcode value type.
+ * @param context The context to retrieve string resources.
+ * @param valueType The integer value type from the [Barcode] object.
+ * @return The string name of the barcode type.
+ */
+internal fun getBarcodeTypeName(context: Context, valueType: Int): String {
     return when (valueType) {
         Barcode.TYPE_URL -> context.getString(R.string.barcode_type_url)
         Barcode.TYPE_DRIVER_LICENSE -> context.getString(R.string.barcode_type_drivers_license)
@@ -198,7 +204,16 @@ private fun getBarcodeTypeName(context: Context, valueType: Int): String {
     }
 }
 
-private fun formatDisplayData(
+/**
+ * Formats the raw barcode data into a displayable string, including the type and format.
+ * @param context The context to retrieve string resources.
+ * @param data The raw string data from the barcode.
+ * @param valueType The integer value type from the [Barcode] object.
+ * @param format The integer format from the [Barcode] object.
+ * @param getBarcodeFormatName A function to get the name of the barcode format.
+ * @return A formatted string for display.
+ */
+internal fun formatDisplayData(
     context: Context,
     data: String,
     valueType: Int,
@@ -213,4 +228,29 @@ private fun formatDisplayData(
         else -> data
     }
     return header + formattedData
+}
+
+/**
+ * Returns a human-readable name for the given barcode format.
+ * Note: This is a simplified mapping.
+ * @param format The integer format from the [Barcode] object.
+ * @return The string name of the barcode format.
+ */
+internal fun getBarcodeFormatName(format: Int): String {
+    return when (format) {
+        Barcode.FORMAT_QR_CODE -> "QR Code"
+        Barcode.FORMAT_CODE_128 -> "Code 128"
+        Barcode.FORMAT_EAN_13 -> "EAN-13"
+        Barcode.FORMAT_UPC_A -> "UPC-A"
+        Barcode.FORMAT_DATA_MATRIX -> "Data Matrix"
+        Barcode.FORMAT_PDF417 -> "PDF417"
+        Barcode.FORMAT_AZTEC -> "Aztec"
+        Barcode.FORMAT_CODE_39 -> "Code 39"
+        Barcode.FORMAT_CODE_93 -> "Code 93"
+        Barcode.FORMAT_CODABAR -> "Codabar"
+        Barcode.FORMAT_EAN_8 -> "EAN-8"
+        Barcode.FORMAT_ITF -> "ITF"
+        Barcode.FORMAT_UPC_E -> "UPC-E"
+        else -> "Unknown Format"
+    }
 }
