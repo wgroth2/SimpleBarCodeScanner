@@ -45,4 +45,6 @@
     <string name="history_item_time">Time: %1$s</string>
     <string name="history_item_type">Type: %1$s</string>
     <string name="history_item_result">Result: %1$s…</string>
+    <string name="feedback">Feedback</string>
+    <string name="feedback_url" translatable="false">https://digiroth.com/apps/simple-bar-code-scanner/</string>
 </resources>

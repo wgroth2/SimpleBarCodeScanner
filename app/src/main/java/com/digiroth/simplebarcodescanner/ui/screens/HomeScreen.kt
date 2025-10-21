@@ -26,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -53,6 +54,8 @@ fun HomeScreen(
     val context: Context = LocalContext.current
     var showAboutDialog by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+    val uriHandler = LocalUriHandler.current
+    val feedbackUrl = stringResource(id = R.string.feedback_url)
 
     val isAutoZoomEnabled by viewModel.isAutoZoomEnabled.collectAsState()
 
@@ -91,10 +94,12 @@ fun HomeScreen(
                         settingsText = stringResource(R.string.settings),
                         aboutText = stringResource(R.string.about),
                         historyText = stringResource(R.string.scan_history),
+                        feedbackText = stringResource(R.string.feedback),
                         menuContentDescText = stringResource(R.string.menu),
                         onSettingsClick = onNavigateToSettings,
                         onAboutClick = { showAboutDialog = true },
-                        onHistoryClick = onNavigateToHistory
+                        onHistoryClick = onNavigateToHistory,
+                        onFeedbackClick = { uriHandler.openUri(feedbackUrl) }
                     )
                 }
             )

@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">Сканер штрих-кодів</string>
     <string name="app_version_info">Версія %1$s</string>
+    <string name="build_time_info">Built on: %1$s</string>
     <string name="app_name_headline">Читач штрих-кодів</string>
     <string name="scan">Сканувати</string>
     <string name="no_data">Дані у штрих-коді не знайдено</string>
@@ -45,4 +46,6 @@
     <string name="history_item_time">Час: %1$s</string>
     <string name="history_item_type">Тип: %1$s</string>
     <string name="history_item_result">Результат: %1$s…</string>
+    <string name="feedback">Відгук</string>
+    <string name="feedback_url" translatable="false">https://digiroth.com/apps/simple-bar-code-scanner/</string>
 </resources>

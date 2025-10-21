@@ -22,20 +22,24 @@ import com.digiroth.simplebarcodescanner.R
  * @param settingsText The text to display for the "Settings" menu item.
  * @param aboutText The text to display for the "About" menu item.
  * @param historyText The text to display for the "Scan History" menu item.
+ * @param feedbackText The text to display for the "Feedback" menu item.
  * @param menuContentDescText The content description for the menu icon.
  * @param onSettingsClick A lambda function to be invoked when the "Settings" item is clicked.
  * @param onAboutClick A lambda function to be invoked when the "About" item is clicked.
  * @param onHistoryClick A lambda function to be invoked when the "Scan History" item is clicked.
+ * @param onFeedbackClick A lambda function to be invoked when the "Feedback" item is clicked.
  */
 @Composable
 fun TopAppBarMenu(
     settingsText: String,
     aboutText: String,
     historyText: String,
+    feedbackText: String,
     menuContentDescText: String,
     onSettingsClick: () -> Unit,
     onAboutClick: () -> Unit,
-    onHistoryClick: () -> Unit
+    onHistoryClick: () -> Unit,
+    onFeedbackClick: () -> Unit
 ) {
     var menuExpanded by remember { mutableStateOf(false) }
 
@@ -58,6 +62,13 @@ fun TopAppBarMenu(
             text = { Text(settingsText) },
             onClick = {
                 onSettingsClick()
+                menuExpanded = false
+            }
+        )
+        DropdownMenuItem(
+            text = { Text(feedbackText) },
+            onClick = {
+                onFeedbackClick()
                 menuExpanded = false
             }
         )

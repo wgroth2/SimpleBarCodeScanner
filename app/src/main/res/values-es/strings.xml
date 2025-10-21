@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">Escáner de Código de Barras</string>
     <string name="app_version_info">Versión %1$s</string>
+    <string name="build_time_info">Built on: %1$s</string>
     <string name="app_name_headline">Lector de Códigos de Barras</string>
     <string name="scan">Escanear</string>
     <string name="no_data">No se encontraron datos en el código de barras</string>
@@ -45,4 +46,6 @@
     <string name="history_item_time">Hora: %1$s</string>
     <string name="history_item_type">Tipo: %1$s</string>
     <string name="history_item_result">Resultado: %1$s…</string>
+    <string name="feedback">Comentarios</string>
+    <string name="feedback_url" translatable="false">https://digiroth.com/apps/simple-bar-code-scanner/</string>
 </resources>

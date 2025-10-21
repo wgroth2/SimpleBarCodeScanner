@@ -29,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -70,6 +71,8 @@ fun ResultScreen(
         getBarcodeFormatName = { fmt -> getBarcodeFormatName(fmt) }
     )
     var showAboutDialog by remember { mutableStateOf(false) }
+    val uriHandler = LocalUriHandler.current
+    val feedbackUrl = "https://digiroth.com/apps/simple-bar-code-scanner/"
 
     Scaffold(
         topBar = {
@@ -88,10 +91,12 @@ fun ResultScreen(
                         settingsText = stringResource(R.string.settings),
                         aboutText = stringResource(R.string.about),
                         historyText = stringResource(R.string.scan_history),
+                        feedbackText = stringResource(R.string.feedback),
                         menuContentDescText = stringResource(R.string.menu),
                         onSettingsClick = onNavigateToSettings,
                         onAboutClick = { showAboutDialog = true },
-                        onHistoryClick = onNavigateToHistory
+                        onHistoryClick = onNavigateToHistory,
+                        onFeedbackClick = { uriHandler.openUri(feedbackUrl) }
                     )
                 }
 
@@ -180,8 +185,8 @@ fun ResultScreen(
     }
 }
 
-
-/* Returns a human-readable name for the given barcode value type.
+/**
+ * Returns a human-readable name for the given barcode value type.
  * @param context The context to retrieve string resources.
  * @param valueType The integer value type from the [Barcode] object.
  * @return The string name of the barcode type.
