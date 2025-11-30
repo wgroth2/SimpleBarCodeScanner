@@ -9,6 +9,7 @@ import com.digiroth.simplebarcodescanner.data.ScanHistoryRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 /**
  * ViewModel for the Scan History screen.
@@ -30,6 +31,15 @@ class ScanHistoryViewModel(private val repository: ScanHistoryRepository) : View
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = emptyList()
         )
+
+    /**
+     * Deletes all scans from the history.
+     */
+    fun clearHistory() {
+        viewModelScope.launch {
+            repository.clearAll()
+        }
+    }
 }
 
 /**

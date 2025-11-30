@@ -29,4 +29,10 @@ interface ScanHistoryDao {
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertScan(scan: Scan)
+
+    /**
+     * Deletes all entries from the "scan_history" table.
+     */
+    @Query("DELETE FROM scan_history")
+    suspend fun clearAll()
 }

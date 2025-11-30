@@ -27,4 +27,11 @@ class ScanHistoryRepository(private val scanHistoryDao: ScanHistoryDao) {
     suspend fun insert(scan: Scan) {
         scanHistoryDao.insertScan(scan)
     }
+
+    /**
+     * Suspended function to delete all scan records from the database.
+     */
+    suspend fun clearAll() {
+        scanHistoryDao.clearAll()
+    }
 }

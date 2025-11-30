@@ -84,7 +84,7 @@ private fun SwitchPreference(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onCheckedChange(!isChecked) }
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = 16.dp, vertical = 20.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.weight(1f)) {
@@ -111,42 +111,37 @@ private fun LanguagePreference(
         "it" to "Italiano",
         "uk" to "Українська"
     )
+    val currentLanguageName = languages[currentLanguage] ?: "English"
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { expanded = true }
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column(modifier = Modifier.weight(1f)) {
-            Text(text = stringResource(R.string.language), style = MaterialTheme.typography.titleMedium)
-            Text(
-                text = languages[currentLanguage] ?: "English",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+    Box {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { expanded = true }
+                .padding(horizontal = 16.dp, vertical = 20.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(text = stringResource(R.string.language), style = MaterialTheme.typography.titleMedium)
+                Text(
+                    text = currentLanguageName,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
         }
-
-        Box {
-            // This text is what the user clicks to expand the dropdown
-            Text(
-                text = languages[currentLanguage] ?: "English",
-                modifier = Modifier.padding(8.dp)
-            )
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                languages.forEach { (code, name) ->
-                    DropdownMenuItem(
-                        text = { Text(name) },
-                        onClick = {
-                            onLanguageSelected(code)
-                            expanded = false
-                        }
-                    )
-                }
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            languages.forEach { (code, name) ->
+                DropdownMenuItem(
+                    text = { Text(name) },
+                    onClick = {
+                        onLanguageSelected(code)
+                        expanded = false
+                    }
+                )
             }
         }
     }

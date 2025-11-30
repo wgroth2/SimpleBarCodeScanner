@@ -1,28 +1,37 @@
 /* Copyright 2025 Bill Roth */
 package com.digiroth.simplebarcodescanner.ui.screens
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.digiroth.simplebarcodescanner.R
 import com.digiroth.simplebarcodescanner.data.Scan
 import com.digiroth.simplebarcodescanner.ui.components.ScanHistoryItem
-import com.google.mlkit.vision.barcode.common.Barcode
 
 /**
  * A screen that displays a list of previously scanned barcodes.
@@ -42,6 +51,7 @@ fun ScanHistoryScreen(
     viewModel: ScanHistoryViewModel
 ) {
     val scans by viewModel.allScans.collectAsState()
+    var showConfirmDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -51,47 +61,64 @@ fun ScanHistoryScreen(
                     IconButton(onClick = onBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
+                },
+                actions = {
+                    if (scans.isNotEmpty()) {
+                        // TODO: Add string resource for this
+                        IconButton(onClick = { showConfirmDialog = true }) {
+                            Icon(Icons.Default.Delete, contentDescription = "Clear History")
+                        }
+                    }
                 }
             )
         }
     ) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues)) {
-            LazyColumn(modifier = Modifier.padding(8.dp)) {
-                items(scans) { scan ->
-                    ScanHistoryItem(
-                        scan = scan,
-                        onItemClick = onScanHistoryItemClick,
-                        getBarcodeFormatName = { format -> getBarcodeFormatName(format) }
+            if (scans.isEmpty()) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        // TODO: Add string resource for this
+                        text = "Your scan history is empty.",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
+                }
+            } else {
+                LazyColumn(modifier = Modifier.padding(8.dp)) {
+                    items(scans) { scan ->
+                        ScanHistoryItem(
+                            scan = scan,
+                            onItemClick = onScanHistoryItemClick,
+                            getBarcodeFormatName = { format -> getBarcodeFormatName(format) }
+                        )
+                    }
                 }
             }
         }
     }
-}
 
-///**
-// * Converts a barcode format integer constant from ML Kit's [Barcode] class into a
-// * human-readable string.
-// *
-// * @param format The integer constant representing the barcode format.
-// * @return A string name for the format (e.g., "QR Code", "Code 128"), or "Unknown Format" if the
-// *         integer is not recognized.
-// */
-//fun getBarcodeFormatName(format: Int): String {
-//    return when (format) {
-//        Barcode.FORMAT_CODE_128 -> "Code 128"
-//        Barcode.FORMAT_CODE_39 -> "Code 39"
-//        Barcode.FORMAT_CODE_93 -> "Code 93"
-//        Barcode.FORMAT_CODABAR -> "Codabar"
-//        Barcode.FORMAT_DATA_MATRIX -> "Data Matrix"
-//        Barcode.FORMAT_EAN_13 -> "EAN-13"
-//        Barcode.FORMAT_EAN_8 -> "EAN-8"
-//        Barcode.FORMAT_ITF -> "ITF"
-//        Barcode.FORMAT_QR_CODE -> "QR Code"
-//        Barcode.FORMAT_UPC_A -> "UPC-A"
-//        Barcode.FORMAT_UPC_E -> "UPC-E"
-//        Barcode.FORMAT_PDF417 -> "PDF417"
-//        Barcode.FORMAT_AZTEC -> "Aztec"
-//        else -> "Unknown Format"
-//    }
-//}
+    if (showConfirmDialog) {
+        AlertDialog(
+            onDismissRequest = { showConfirmDialog = false },
+            // TODO: Add string resources for these
+            title = { Text("Clear History?") },
+            text = { Text("Are you sure you want to permanently delete all scan history? This action cannot be undone.") },
+            confirmButton = {
+                TextButton(onClick = {
+                    viewModel.clearHistory()
+                    showConfirmDialog = false
+                }) {
+                    Text("Yes")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showConfirmDialog = false }) {
+                    Text("No")
+                }
+            }
+        )
+    }
+}
