@@ -48,4 +48,10 @@
     <string name="history_item_result">Resultado: %1$s…</string>
     <string name="feedback">Comentarios</string>
     <string name="feedback_url" translatable="false">https://digiroth.com/apps/simple-bar-code-scanner/</string>
+    <string name="clear_history">Borrar historial</string>
+    <string name="no_scans_yet">Tu historial de escaneos está vacío.</string>
+    <string name="confirm_clear_history_title">¿Borrar historial?</string>
+    <string name="confirm_clear_history_message">¿Estás seguro de que deseas eliminar permanentemente todo el historial de escaneos? Esta acción no se puede deshacer.</string>
+    <string name="yes">Sí</string>
+    <string name="no">No</string>
 </resources>

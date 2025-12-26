@@ -64,9 +64,8 @@ fun ScanHistoryScreen(
                 },
                 actions = {
                     if (scans.isNotEmpty()) {
-                        // TODO: Add string resource for this
                         IconButton(onClick = { showConfirmDialog = true }) {
-                            Icon(Icons.Default.Delete, contentDescription = "Clear History")
+                            Icon(Icons.Default.Delete, contentDescription = stringResource(R.string.clear_history))
                         }
                     }
                 }
@@ -80,8 +79,7 @@ fun ScanHistoryScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        // TODO: Add string resource for this
-                        text = "Your scan history is empty.",
+                        text = stringResource(R.string.no_scans_yet),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -103,20 +101,19 @@ fun ScanHistoryScreen(
     if (showConfirmDialog) {
         AlertDialog(
             onDismissRequest = { showConfirmDialog = false },
-            // TODO: Add string resources for these
-            title = { Text("Clear History?") },
-            text = { Text("Are you sure you want to permanently delete all scan history? This action cannot be undone.") },
+            title = { Text(stringResource(R.string.confirm_clear_history_title)) },
+            text = { Text(stringResource(R.string.confirm_clear_history_message)) },
             confirmButton = {
                 TextButton(onClick = {
                     viewModel.clearHistory()
                     showConfirmDialog = false
                 }) {
-                    Text("Yes")
+                    Text(stringResource(R.string.yes))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showConfirmDialog = false }) {
-                    Text("No")
+                    Text(stringResource(R.string.no))
                 }
             }
         )

@@ -48,4 +48,10 @@
     <string name="history_item_result">Risultato: %1$s…</string>
     <string name="feedback">Feedback</string>
     <string name="feedback_url" translatable="false">https://digiroth.com/apps/simple-bar-code-scanner/</string>
+    <string name="clear_history">Cancella cronologia</string>
+    <string name="no_scans_yet">La cronologia delle scansioni è vuota.</string>
+    <string name="confirm_clear_history_title">Cancellare la cronologia?</string>
+    <string name="confirm_clear_history_message">Sei sicuro di voler eliminare definitivamente tutta la cronologia delle scansioni? Questa azione non può essere annullata.</string>
+    <string name="yes">Sì</string>
+    <string name="no">No</string>
 </resources>
